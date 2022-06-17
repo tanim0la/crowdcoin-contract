@@ -44,9 +44,13 @@ contract Campaign {
 
     function contribute() public payable {
         require(msg.value > minimumContribution);
-
-        approvers[msg.sender] = true;
-        approversCount++;
+        if(approvers[msg.sender]){
+            
+        } else{
+            approvers[msg.sender] = true;
+            approversCount++;
+        }
+        
     }
 
     function createRequest(string memory description, uint value, address recipient) public restricted {
@@ -80,4 +84,19 @@ contract Campaign {
         payable(request.recipient).transfer(request.value);
         request.complete = true;
     }
+
+    function getSummary() public view returns (uint, uint, uint, uint, address) {
+        return(
+            minimumContribution,
+            address(this).balance,
+            requests.length,
+            approversCount,
+            manager
+        );
+    }
+
+    function getRequestsCount() public view returns (uint) {
+        return  requests.length;
+    }
+
 }
