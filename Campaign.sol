@@ -80,9 +80,10 @@ contract Campaign {
 
         require(request.approvalCount > (approversCount/2));
         require(!request.complete);
-
-        payable(request.recipient).transfer(request.value);
+        
         request.complete = true;
+          
+        payable(request.recipient).transfer(request.value);
     }
 
     function getSummary() public view returns (uint, uint, uint, uint, address) {
